@@ -46,12 +46,6 @@ _FWDT(FWDTEN_OFF)       // WDT disabled in hardware; SWDTEN bit disabled
 _FICD(ICS_PGx1)         // EMUC/EMUD share PGC3/PGD3
 
 //------------------------------------------------------------------------------
-// Definitions
-
-#define TWO_PI_T        (6.283185f * (1.0f / 16000.0f)) // 2 * PI * sample period
-#define ENVELOPE_FREQ   1.0f    // Hz
-
-//------------------------------------------------------------------------------
 // Function declarations
 
 static void InitMain(void);
