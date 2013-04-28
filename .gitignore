@@ -1,0 +1,21 @@
+#############
+## MPLAB
+#############
+
+# User-specific files
+*.mcs
+*.mcw
+
+# Output files
+*.cof
+*.d
+*.elf
+*.hex
+*.o
+*.map
+
+##################
+# Hex archive
+##################
+
+hex-archive/
