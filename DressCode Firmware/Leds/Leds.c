@@ -15,9 +15,9 @@
 
 #define TWO_PI_T        (6.283185f * (1.0f / 16000.0f)) // 2 * PI * sample period
 #define ENVELOPE_FREQ   1.0f    // Hz
-#define LED1_THRESH     1200    // threshold relative to envelope
-#define LED2_THRESH     1000
-#define LED3_THRESH     800
+#define LED1_THRESH     1050    // threshold relative to envelope
+#define LED2_THRESH     900
+#define LED3_THRESH     600
 #define LED1_OFF_RATE   10     // arbitrary units
 #define LED2_OFF_RATE   20
 #define LED3_OFF_RATE   40
