@@ -140,7 +140,7 @@ void __attribute__((interrupt, auto_psv))_ADC1Interrupt(void) {
     }
     else if(gain >= FIXED_FROM_INT(64)) {
         setPreampGain(GAIN_64);
-        swGain = gain >> 8;
+        swGain = gain >> 6;
     }
     else if(gain >= FIXED_FROM_INT(16)) {
         setPreampGain(GAIN_16);
