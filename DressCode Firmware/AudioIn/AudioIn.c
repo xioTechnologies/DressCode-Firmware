@@ -4,10 +4,10 @@
 
     Sample rate:
     = MIPS / ( (ADCS + 1) * (12 + SAMC) * N )
-    = 8000000 / ( (7 + 1) * (14 + 17) * N)
-    = 8.065 kHz
+    = 4000000 / ( (7 + 1) * (14 + 17) * N)
+    = 4.032 kHz
 
-    SPI clock = 8 MHz
+    SPI clock = 4 MHz
 
     P2P_TARGET must be less than ADC maximum value else clipping will not cause
     the auto gain to decrease.  An optimal value is as high as possible to
@@ -38,7 +38,7 @@ typedef enum {
 } PreampGain;
 
 #define CS_PIN          _LATA9
-#define TWO_PI_T        (6.283185f * (1.0f / 8000.0f))  // 2 * PI * sample period
+#define TWO_PI_T        (6.283185f * (1.0f / 4000.0f))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
 #define ENVELOPE_FREQ   0.1f    // Hz
 #define P2P_TARGET      1024    // auto gain peak-to-peak target

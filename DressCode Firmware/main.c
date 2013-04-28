@@ -60,7 +60,7 @@ int main(void) {
 
     // Init modules
     AudioInInit();
-    Uart2Init(UART_BAUD_1000000, 0);
+    Uart2Init(UART_BAUD_250000, 0);
     LedsInit();
 
     // Main loop
@@ -133,8 +133,8 @@ static void InitMain(void) {
     _TRISC8 = 0;    // RC8 is OC2
     _TRISA10 = 0;   // RA10 is OC3
 
-    // Setup oscillator for 8 MIPS
-    CLKDIVbits.RCDIV = 0b001;   // 4 MHz (divide-by-2) (default)
+    // Setup oscillator for 4 MIPS
+    CLKDIVbits.RCDIV = 0b010;   // 2 MHz (divide-by-4)
 }
 
 //------------------------------------------------------------------------------

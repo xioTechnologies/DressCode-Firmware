@@ -10,9 +10,9 @@
 // Definitions
 
 typedef enum {
-    UART_BAUD_9600      = 51,
-    UART_BAUD_115200    = 3,
-    UART_BAUD_1000000   = 1
+    UART_BAUD_9600      = 103,
+    UART_BAUD_115200    = 8,
+    UART_BAUD_250000    = 3
 } UartBaud;
 
 #endif
