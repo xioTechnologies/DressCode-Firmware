@@ -4,8 +4,8 @@
 
     Sample rate:
     = MIPS / ( (ADCS + 1) * (12 + SAMC) * N )
-    = 16000000 / ( (7 + 1) * (14 + 17) * N)
-    = 16.13 kHz
+    = 8000000 / ( (7 + 1) * (14 + 17) * N)
+    = 8.065 kHz
 
     SPI clock = 8 MHz
 
@@ -38,7 +38,7 @@ typedef enum {
 } PreampGain;
 
 #define CS_PIN          _LATA9
-#define TWO_PI_T        (6.283185f * (1.0f / 16000.0f)) // 2 * PI * sample period
+#define TWO_PI_T        (6.283185f * (1.0f / 8000.0f))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
 #define ENVELOPE_FREQ   0.1f    // Hz
 #define P2P_TARGET      1024    // auto gain peak-to-peak target
@@ -78,7 +78,7 @@ void AudioInInit(void) {
     SPI2CON1bits.MODE16 = 1;    // Communication is word-wide (16 bits)
     SPI2CON1bits.CKE = 1;       // Serial output data changes on transition from active clock state to Idle clock state (see bit 6)
     SPI2CON1bits.MSTEN = 1;     // Master mode
-    SPI2CON1bits.SPRE = 0b110;  // Secondary prescale 2:1
+    SPI2CON1bits.SPRE = 0b111;  // Secondary prescale 1:1
     SPI2CON1bits.PPRE = 0b11;   // Primary prescale 1:1
     SPI2STATbits.SPIEN = 1;     // Enables module and configures SCKx, SDOx, SDIx and SSx as serial port pins
 

@@ -133,8 +133,8 @@ static void InitMain(void) {
     _TRISC8 = 0;    // RC8 is OC2
     _TRISA10 = 0;   // RA10 is OC3
 
-    // Setup oscillator for 16 MIPS
-    CLKDIVbits.RCDIV = 0b000;   // 8 MHz (divide-by-1)
+    // Setup oscillator for 8 MIPS
+    CLKDIVbits.RCDIV = 0b001;   // 4 MHz (divide-by-2) (default)
 }
 
 //------------------------------------------------------------------------------

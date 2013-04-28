@@ -13,14 +13,14 @@
 //------------------------------------------------------------------------------
 // Definitions
 
-#define TWO_PI_T        (6.283185f * (1.0f / 16000.0f)) // 2 * PI * sample period
+#define TWO_PI_T        (6.283185f * (1.0f / 8000.0f))  // 2 * PI * sample period
 #define ENVELOPE_FREQ   1.0f    // Hz
 #define LED1_THRESH     1050    // threshold relative to envelope
 #define LED2_THRESH     900
 #define LED3_THRESH     600
-#define LED1_OFF_RATE   10     // arbitrary units
-#define LED2_OFF_RATE   20
-#define LED3_OFF_RATE   40
+#define LED1_OFF_RATE   20     // arbitrary units
+#define LED2_OFF_RATE   40
+#define LED3_OFF_RATE   80
 
 //------------------------------------------------------------------------------
 // Functions
@@ -28,7 +28,7 @@
 void LedsInit(void) {
 
     // Setup Timer 3
-    PR3 = 0xFFFF;       // set period register for 62.5 kHz at 16 MIPS for 8-bit resolution
+    PR3 = 0xFFFF;       // set period register for 122 Hz at 8 MIPS for 16-bit resolution
     T3CONbits.TON = 1;  // start timer
 
     // Setup Output Compare 1,2,3 as PWM
