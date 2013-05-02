@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 // Definitions
 
-#define TWO_PI_T        (6.283185f * (1.0f / 4000.0f))  // 2 * PI * sample period
+#define TWO_PI_T        (6.283185f * (1.0f / 4032.0f))  // 2 * PI * sample period
 #define ENVELOPE_FREQ   1.0f    // Hz
 #define LED1_THRESH     3000    // threshold relative to envelope
 #define LED2_THRESH     2000

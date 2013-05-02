@@ -4,7 +4,7 @@
 
     Sample rate:
     = MIPS / ( (ADCS + 1) * (12 + SAMC) * N )
-    = 4000000 / ( (7 + 1) * (14 + 17) * 4)
+    = 4000000 / ( (1 + 1) * (14 + 17) * 16)
     = 4.032 kHz
 
     SPI clock = 4 MHz
@@ -42,7 +42,7 @@ typedef enum {
 } PreampGain;
 
 #define CS_PIN          _LATA9
-#define TWO_PI_T        (6.283185f * (1.0f / 4000.0f))  // 2 * PI * sample period
+#define TWO_PI_T        (6.283185f * (1.0f / 4032.0f))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
 #define ENVELOPE_FREQ   7.32f   // Hz
 #define AUTO_GAIN_FREQ  0.05f   // Hz
@@ -69,9 +69,9 @@ void AudioInInit(void) {
     AD1CON1bits.SSRC = 0b0111;  // Internal counter ends sampling and starts conversion (auto-convert)
     AD1CON1bits.ASAM = 1;       // Sampling begins immediately after the last conversion; SAMP bit is auto-set
     AD1CON2bits.PVCFG = 0b01;   // External VREF+
-    AD1CON2bits.SMPI = 3;       // Interrupts at the completion of the conversion for each 4th sample
+    AD1CON2bits.SMPI = 15;      // Interrupts at the completion of the conversion for each 16th sample
     AD1CON3bits.SAMC = 17;      // Auto-Sample Time = 17 TAD
-    AD1CON3bits.ADCS = 7;       // 8 * TCY = TAD
+    AD1CON3bits.ADCS = 1;       // 2 * TCY = TAD
     AD1CHSbits.CH0SA = 1;       // Sample A Channel 0 Positive Input = AN1
     _AD1IP = 7;                 // set interrupt priority
     _AD1IF = 0;                 // clear interrupt flag
@@ -115,7 +115,19 @@ void __attribute__((interrupt, auto_psv))_ADC1Interrupt(void) {
     adc += ADC1BUF1;
     adc += ADC1BUF2;
     adc += ADC1BUF3;
-    adc >>= 2;     // divide by 4
+    adc += ADC1BUF4;
+    adc += ADC1BUF5;
+    adc += ADC1BUF6;
+    adc += ADC1BUF7;
+    adc += ADC1BUF8;
+    adc += ADC1BUF9;
+    adc += ADC1BUF10;
+    adc += ADC1BUF11;
+    adc += ADC1BUF12;
+    adc += ADC1BUF13;
+    adc += ADC1BUF14;
+    adc += ADC1BUF15;
+    adc >>= 4;     // divide by 16
 
     // High-pass filter
     Fixed signal = FIXED_FROM_INT(adc) - bias;
