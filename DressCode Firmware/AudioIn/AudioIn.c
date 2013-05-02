@@ -70,7 +70,7 @@ void AudioInInit(void) {
     AD1CON1bits.ASAM = 1;       // Sampling begins immediately after the last conversion; SAMP bit is auto-set
     AD1CON2bits.PVCFG = 0b01;   // External VREF+
     AD1CON2bits.SMPI = 3;       // Interrupts at the completion of the conversion for each sample
-    AD1CON3bits.SAMC = 16;      // Auto-Sample Time = 16 TAD
+    AD1CON3bits.SAMC = 17;      // Auto-Sample Time = 17 TAD
     AD1CON3bits.ADCS = 7;       // 8 * TCY = TAD
     AD1CHSbits.CH0SA = 1;       // Sample A Channel 0 Positive Input = AN1
     _AD1IP = 7;                 // set interrupt priority
