@@ -4,7 +4,7 @@
 
     Sample rate:
     = MIPS / ( (ADCS + 1) * (12 + SAMC) * N )
-    = 4000000 / ( (7 + 1) * (14 + 17) * N)
+    = 4000000 / ( (7 + 1) * (14 + 17) * 4)
     = 4.032 kHz
 
     SPI clock = 4 MHz
@@ -69,7 +69,7 @@ void AudioInInit(void) {
     AD1CON1bits.SSRC = 0b0111;  // Internal counter ends sampling and starts conversion (auto-convert)
     AD1CON1bits.ASAM = 1;       // Sampling begins immediately after the last conversion; SAMP bit is auto-set
     AD1CON2bits.PVCFG = 0b01;   // External VREF+
-    AD1CON2bits.SMPI = 3;       // Interrupts at the completion of the conversion for each sample
+    AD1CON2bits.SMPI = 3;       // Interrupts at the completion of the conversion for each 4th sample
     AD1CON3bits.SAMC = 17;      // Auto-Sample Time = 17 TAD
     AD1CON3bits.ADCS = 7;       // 8 * TCY = TAD
     AD1CHSbits.CH0SA = 1;       // Sample A Channel 0 Positive Input = AN1
