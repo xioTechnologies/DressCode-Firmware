@@ -9,6 +9,10 @@
 
     SPI clock = 4 MHz
 
+    ENVELOPE_FREQ and AUTO_GAIN_FREQ combine to create second order dynamics.
+    The time constant of AUTO_GAIN_FREQ must be sufficiently lower than that of
+    ENVELOPE_FREQ to ensure closed-loop stability.
+
     P2P_TARGET must be less than ADC maximum value else clipping will not cause
     the auto gain to decrease.  An optimal value is as high as possible to
     maximise resolution and preamp gain.  The ideal value is therefore half of
@@ -40,7 +44,8 @@ typedef enum {
 #define CS_PIN          _LATA9
 #define TWO_PI_T        (6.283185f * (1.0f / 4000.0f))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
-#define ENVELOPE_FREQ   0.1f    // Hz
+#define ENVELOPE_FREQ   7.32f   // Hz
+#define AUTO_GAIN_FREQ  0.05f   // Hz
 #define P2P_TARGET      1024    // auto gain peak-to-peak target
 
 //------------------------------------------------------------------------------
@@ -116,6 +121,10 @@ void __attribute__((interrupt, auto_psv))_ADC1Interrupt(void) {
     Fixed signal = FIXED_FROM_INT(adc) - bias;
     bias += FIXED_MUL(signal, FIXED_FROM_FLOAT(HP_FILTER_FREQ * TWO_PI_T));
 
+    // Apply auto gain
+    signal = FIXED_MUL(signal, swGain);
+    sampleValue = signal;
+
     // Envelope follower
     if(signal > envelope) {
         if(signal > 0) {
@@ -124,15 +133,14 @@ void __attribute__((interrupt, auto_psv))_ADC1Interrupt(void) {
     }
     envelope -= FIXED_MUL(envelope, FIXED_FROM_FLOAT(ENVELOPE_FREQ * TWO_PI_T));
 
-    // Adjust auto-gain
-    sampleValue = FIXED_MUL(signal, swGain);
-    Fixed error = FIXED_MUL(envelope, swGain) - FIXED_FROM_INT(P2P_TARGET);
-    gain -= FIXED_MUL(error, FIXED_FROM_FLOAT(ENVELOPE_FREQ * TWO_PI_T));   // proportional feedback
+    // Adjust auto gain
+    Fixed error = envelope - FIXED_FROM_INT(P2P_TARGET);
+    gain -= FIXED_MUL(error, FIXED_FROM_FLOAT(AUTO_GAIN_FREQ * TWO_PI_T));  // proportional feedback
 
     // Apply gain as combination of preamp gain and software gain
     if(gain >= FIXED_FROM_INT(1024)) {
         setPreampGain(GAIN_1024);
-        swGain = gain >> 10;
+        swGain = gain >> 9;     // should be 10 but 9 provides correct behaviour when tested, I don't know why
     }
     else if(gain >= FIXED_FROM_INT(256)) {
         setPreampGain(GAIN_256);
