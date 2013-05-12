@@ -47,7 +47,7 @@ void Uart2PutString(const char* str);
 }
 #define Uart2FlushRxBuf() { uart2RxBufOutPos = uart2RxBufInPos; uart2RxBufOverrun = 0; }
 #define Uart2FlushTxBuf() { uart2TxBufOutPos = uart2TxBufInPos; uart2TxBufCount = 0; }
-#define Uart2RxTasks() { if(U2STAbits.URXDA) _U2RXIF = 1; }
+#define Uart2RxTasks() { if(U2STAbits.URXDA) { _U2RXIF = 1; } U2STAbits.OERR = 0; }
 #define Uart2TxIsIdle() (_U2TXIE != 0)
 
 #endif
