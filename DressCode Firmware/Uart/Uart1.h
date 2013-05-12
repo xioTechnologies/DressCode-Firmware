@@ -47,6 +47,7 @@ void Uart1PutString(const char* str);
 }
 #define Uart1FlushRxBuf() { uart1RxBufOutPos = uart1RxBufInPos; uart1RxBufOverrun = 0; }
 #define Uart1FlushTxBuf() { uart1TxBufOutPos = uart1TxBufInPos; uart1TxBufCount = 0; }
+#define Uart1RxTasks() { if(U1STAbits.URXDA) _U1RXIF = 1; }
 #define Uart1TxIsIdle() (_U1TXIE != 0)
 
 #endif

@@ -37,7 +37,7 @@ void Uart2Init(const UartBaud baud, const int flowControlEnabled) {
     else {
         U2MODEbits.UEN = 0b00;  // UxTX and UxRX pins are enabled and used; UxCTS, UxRTS and BCLKx pins are controlled by port latches
     }
-    U2MODEbits.UARTEN = 1;      // Uart2 enabled
+    U2MODEbits.UARTEN = 1;      // UART2 enabled
     U2MODEbits.BRGH = 1;        // high speed mode
     U2STAbits.UTXISEL1 = 0b01;  // interrupt when TX FIFO is empty
     U2STAbits.UTXEN = 1;        // transmit enabled
@@ -66,7 +66,7 @@ void __attribute__((interrupt, auto_psv))_U2RXInterrupt(void) {
             uart2RxBufOverrun = 1;
         }
     } while(U2STAbits.URXDA);   // repeat while data available
-    _U2RXIF = 0;
+    _U2RXIF = 0;    // data received immediately before clearing UxRXIF will be unhandled, URXDA should be polled to set UxRXIF
 }
 
 void __attribute__((interrupt, auto_psv))_U2TXInterrupt(void) {

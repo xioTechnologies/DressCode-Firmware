@@ -72,6 +72,7 @@ int main(void) {
             LedsUpdate(audioSample);
 
             // Print audio sample
+            Uart2RxTasks();
             if(Uart2IsPutReady() >= 6) {
                 static const char asciiDigits[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
                 int i = FIXED_TO_INT(audioSample);
