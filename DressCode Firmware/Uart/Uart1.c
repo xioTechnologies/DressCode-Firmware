@@ -16,12 +16,12 @@
 // Variables
 
 volatile char uart1RxBuf[256];
-volatile unsigned char uart1RxBufInPos = 0;
-volatile unsigned char uart1RxBufOutPos = 0;
+volatile unsigned char uart1RxBufIn = 0;
+volatile unsigned char uart1RxBufOut = 0;
 volatile int uart1RxBufOverrun = 0;
 volatile char uart1TxBuf[256];
-volatile unsigned char uart1TxBufInPos = 0;
-volatile unsigned char uart1TxBufOutPos = 0;
+volatile unsigned char uart1TxBufIn = 0;
+volatile unsigned char uart1TxBufOut = 0;
 volatile unsigned char uart1TxBufCount = 0;
 
 //------------------------------------------------------------------------------
@@ -60,9 +60,9 @@ void Uart1PutString(const char* str) {
 
 void __attribute__((interrupt, auto_psv))_U1RXInterrupt(void) {
     do {
-        uart1RxBuf[uart1RxBufInPos] = U1RXREG;  // fetch data from buffer
-        uart1RxBufInPos++;
-        if(uart1RxBufInPos == uart1RxBufOutPos) {   // check for FIFO overrun
+        uart1RxBuf[uart1RxBufIn] = U1RXREG; // fetch data from buffer
+        uart1RxBufIn++;
+        if(uart1RxBufIn == uart1RxBufOut) { // check for FIFO overrun
             uart1RxBufOverrun = 1;
         }
     } while(U1STAbits.URXDA);   // repeat while data available
@@ -73,11 +73,11 @@ void __attribute__((interrupt, auto_psv))_U1TXInterrupt(void) {
     _U1TXIE = 0;    // disable interrupt to avoid nested interrupt
     _U1TXIF = 0;    // clear interrupt flag
     //do {
-        if(uart1TxBufOutPos == uart1TxBufInPos) {   // if FIFO empty
+        if(uart1TxBufOut == uart1TxBufIn) { // if FIFO empty
             return;
         }
-        U1TXREG = uart1TxBuf[uart1TxBufOutPos]; // send data from FIFO
-        uart1TxBufOutPos++;
+        U1TXREG = uart1TxBuf[uart1TxBufOut];    // send data from FIFO
+        uart1TxBufOut++;
         uart1TxBufCount--;
     //} while(!U1STAbits.UTXBF);  // repeat while buffer not full
     _U1TXIE = 1;    // re-enable interrupt
