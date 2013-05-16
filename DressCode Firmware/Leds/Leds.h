@@ -9,13 +9,13 @@
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Fixed.h"
+#include <libq.h>
 
 //------------------------------------------------------------------------------
 // Function declarations
 
 void LedsInit(void);
-void LedsUpdate(Fixed audioSample);
+void LedsUpdate();
 
 #endif
 
