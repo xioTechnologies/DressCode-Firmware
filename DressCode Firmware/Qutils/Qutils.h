@@ -1,5 +1,5 @@
 /*
-    Q15utils.h
+    Qutils.h
     Author: Vincent Akkermans
 */
 

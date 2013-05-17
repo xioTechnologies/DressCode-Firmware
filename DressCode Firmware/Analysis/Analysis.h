@@ -1,25 +1,20 @@
-/*
-    AudioIn.h
-    Author: Seb Madgwick
-*/
 
-#ifndef AudioIn_h
-#define AudioIn_h
+#ifndef Analysis_h
+#define Analysis_h
 
 //------------------------------------------------------------------------------
 // Includes
 
-#include "Fixed.h"
+#include <libq.h>
+#include "fixed.h"
 
 //------------------------------------------------------------------------------
 // Function declarations
 
-void AudioInInit(void);
-int AudioInIsGetReady(void);
-Fixed AudioInGet(void);
+void initAnalysis(void);
+void updateAnalysis(Fixed sample);
 
 #endif
 
 //------------------------------------------------------------------------------
 // End of file
-

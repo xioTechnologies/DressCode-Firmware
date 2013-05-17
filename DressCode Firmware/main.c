@@ -30,7 +30,8 @@
 
 #include "AudioIn/AudioIn.h"
 #include "Delay/Delay.h"
-//#include "Fixed.h"
+#include "fixed.h"
+#include "Analysis/Analysis.h"
 #include "Leds/Leds.h"
 #include <p24Fxxxx.h>
 #include <stdlib.h>
@@ -62,14 +63,17 @@ int main(void) {
 
     // Init modules
 	LedsInit();
-	SPI1Init();
-    AudioInit();
+	initAnalysis();
+	AudioInInit();
     //Uart2Init(UART_BAUD_250000, 0);
 
     // Main loop
     while(1) {
         // Update LEDs
-        LedsUpdate();
+		if(AudioInIsGetReady()) {
+			updateAnalysis(AudioInGet());
+			//LedsUpdate();
+		}
     }
 }
 

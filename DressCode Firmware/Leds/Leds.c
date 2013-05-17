@@ -7,13 +7,13 @@
 // Includes
 
 #include "Leds.h"
-#include "AudioIn/AudioIn.h"
-#include "Q15utils/Q15utils.h"
+#include "Qutils/Qutils.h"
 #include <p24Fxxxx.h>
 
 //------------------------------------------------------------------------------
 // Definitions
 
+/*
 extern struct GoertzelArray lowG;
 extern struct GoertzelArray midG;
 extern struct GoertzelArray hiG;
@@ -22,6 +22,7 @@ extern _Q15 signal;
 extern struct SpectralFluxOnsetDetector lowSF;
 extern struct SpectralFluxOnsetDetector midSF;
 extern struct SpectralFluxOnsetDetector hiSF;
+*/
 
 //------------------------------------------------------------------------------
 // Functions
@@ -60,6 +61,7 @@ void LedsInit(void) {
 
 void LedsUpdate() {
 
+/*
 	static _Q16 lowM, midM, hiM;
 	static int lowOnset, midOnset, hiOnset;
 	static _Q15 gain;
@@ -88,20 +90,12 @@ void LedsUpdate() {
 		if(SF_readyP(&hiSF)) {
 			hiOnset = SF_getOnset(&hiSF);
 		}
-	
-		/*
-		OC3R = gain >> 8;
-		OC2R = midOnset ? 32000 : 0;
-		OC1R = _Q16toQ15(hiM) >> 8;
-		*/
-
 
 		OC1R = _Q16toQ15(lowM) >> 7;
 		OC2R = _Q16toQ15(midM) >> 7;
 		OC3R = _Q16toQ15(hiM) >> 7;
-		
-		
 	}
+*/
 }
 
 //------------------------------------------------------------------------------

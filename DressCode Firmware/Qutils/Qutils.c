@@ -1,10 +1,9 @@
 /*
-    Q15utils.c
+    Qutils.c
     Author: Vincent Akkermans
 */
 
-
-#include "Q15utils.h"
+#include "Qutils.h"
 
 _Q15 _Q15mpy(_Q15 a, _Q15 b) {
 	_Q15 result = (((signed long)a) * b) >> 15;
