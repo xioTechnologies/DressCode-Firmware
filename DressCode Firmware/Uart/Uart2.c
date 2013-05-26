@@ -59,13 +59,13 @@ void Uart2PutString(const char* str) {
 // Functions - ISRs
 
 void __attribute__((interrupt, auto_psv))_U2RXInterrupt(void) {
-    do {
+    while(U2STAbits.URXDA) {    // repeat while data available
         uart2RxBuf[uart2RxBufIn] = U2RXREG; // fetch data from buffer
         uart2RxBufIn++;
         if(uart2RxBufIn == uart2RxBufOut) { // check for FIFO overrun
             uart2RxBufOverrun = 1;
         }
-    } while(U2STAbits.URXDA);   // repeat while data available
+    }
     _U2RXIF = 0;    // data received immediately before clearing UxRXIF will be unhandled, URXDA should be polled to set UxRXIF
 }
 
