@@ -117,13 +117,15 @@ static void InitMain(void) {
     // Disable analogue Inputs
     ANSA = 0x0003;  // RA0 is Vref+, RA1 is AN1
     ANSB = 0x0000;
+    ANSC = 0x0000;
 
     // Enable pull-ups
     _CN28PUE = 1;   // RB14 is SDI2
     _CN5PUE = 1;    // RB1 is U2RX
+    _CN32PUE = 1;   // RC0 is STAT (battery charging status)
 
     // Set port latches
-    _LATA9 = 1;    // SS1 idle
+    _LATA9 = 1;     // SS1 idle
 
     // Set port directions
     _TRISC5 = 0;    // RC5 is SCK2

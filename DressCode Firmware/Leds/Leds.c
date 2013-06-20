@@ -22,6 +22,8 @@
 #define LED2_OFF_RATE   100
 #define LED3_OFF_RATE   200
 
+#define BATT_STAT       _RC0    // battery charging status (active low)
+
 //------------------------------------------------------------------------------
 // Functions
 
@@ -44,28 +46,38 @@ void LedsInit(void) {
 }
 
 void LedsUpdate(Fixed audioSample) {
-    static Fixed envelope = 0;
     static unsigned led1 = 0;
     static unsigned led2 = 0;
     static unsigned led3 = 0;
 
-   // Envelope follower
-    if(audioSample > envelope) {
-        if(audioSample > 0) {
-            envelope = audioSample;
+    if(!BATT_STAT) {    // blink LED to indicate charging
+        static int timer = 0;
+        if(--timer < 0) {
+            led1 = 65535;
+            timer = 4032 + 2016;
         }
     }
-    envelope -= FIXED_MUL(envelope, FIXED_FROM_FLOAT(ENVELOPE_FREQ * TWO_PI_T));
+    else {
 
-    // Turn on LEDs according to thresholds
-    if(envelope > FIXED_FROM_INT(LED1_THRESH)) {
-        led1 = 65535;
-    }
-    if(envelope > FIXED_FROM_INT(LED2_THRESH)) {
-        led2 = 65535;
-    }
-    if(envelope > FIXED_FROM_INT(LED3_THRESH)) {
-        led3 = 65535;
+        // Envelope follower
+        static Fixed envelope = 0;
+        if(audioSample > envelope) {
+            if(audioSample > 0) {
+                envelope = audioSample;
+            }
+        }
+        envelope -= FIXED_MUL(envelope, FIXED_FROM_FLOAT(ENVELOPE_FREQ * TWO_PI_T));
+
+        // Turn on LEDs according to thresholds
+        if(envelope > FIXED_FROM_INT(LED1_THRESH)) {
+            led1 = 65535;
+        }
+        if(envelope > FIXED_FROM_INT(LED2_THRESH)) {
+            led2 = 65535;
+        }
+        if(envelope > FIXED_FROM_INT(LED3_THRESH)) {
+            led3 = 65535;
+        }
     }
 
     // Turn off LEDs at defined rate
