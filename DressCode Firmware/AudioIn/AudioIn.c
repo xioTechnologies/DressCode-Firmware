@@ -43,7 +43,8 @@ typedef enum {
 
 #define CS_PIN          _LATB15
 #define SPI_DEV			1
-#define TWO_PI_T        (6.283185f * (1.0f / 4032.0f))  // 2 * PI * sample period
+#define SR				16129.03224f
+#define TWO_PI_T        (6.283185f * (1.0f / SR))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
 #define ENVELOPE_FREQ   7.32f   // Hz
 #define AUTO_GAIN_FREQ  0.05f   // Hz

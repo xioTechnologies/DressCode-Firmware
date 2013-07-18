@@ -152,7 +152,7 @@ void updateAnalysis(Fixed sample) {
 
 	OC1R = _Q16toQ15(shortEnv.envelope);
 	OC2R = SF_getOnset(&midSF) ? 32000 : 0;
-	OC3R = _Q16toQ15(GA_getMagnitude(&hiSF.ga));
+	OC3R = _Q16toQ15(GA_getMagnitude(hiSF.ga));
 }
 
 static _Q16 ENV_getAmplitude(Envelope *e) {
