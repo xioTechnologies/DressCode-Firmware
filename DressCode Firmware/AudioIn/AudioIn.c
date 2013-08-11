@@ -41,31 +41,12 @@ typedef enum {
     INVALID
 } PreampGain;
 
-#define CS_PIN          _LATB15
-#define SPI_DEV			1
-#define SR				16129.03224f
-#define TWO_PI_T        (6.283185f * (1.0f / SR))  // 2 * PI * sample period
+#define CS_PIN          _LATA9
+#define TWO_PI_T        (6.283185f * (1.0f / 4032.0f))  // 2 * PI * sample period
 #define HP_FILTER_FREQ  7.32f   // Hz
 #define ENVELOPE_FREQ   7.32f   // Hz
 #define AUTO_GAIN_FREQ  0.05f   // Hz
 #define P2P_TARGET      1024    // auto gain peak-to-peak target
-
-
-#if SPI_DEV == 1
-#define SPIXBUF		SPI1BUF
-#define SPIXIF			_SPI1IF
-#define SPIXASM			"MOV SPI1BUF, W0"
-#define SPIXSTATbits	SPI1STATbits
-#define SPIXCON1bits	SPI1CON1bits
-#endif
-
-#if SPI_DEV == 2
-#define SPIXBUF			SPI2BUF
-#define SPIXIF			_SPI2IF
-#define SPIXASM			"MOV SPI2BUF, W0"
-#define SPIXSTATbits	SPI2STATbits
-#define SPIXCON1bits	SPI2CON1bits
-#endif
 
 //------------------------------------------------------------------------------
 // Variables
@@ -98,13 +79,13 @@ void AudioInInit(void) {
     AD1CON1bits.ADON = 1;       // A/D Converter module is operating
 
     // Setup SPI
-    SPIXSTATbits.SISEL = 0b101; // Interrupt when the last bit is shifted out of SPIxSR; now the transmit is complete
-    SPIXCON1bits.MODE16 = 1;    // Communication is word-wide (16 bits)
-    SPIXCON1bits.CKE = 1;       // Serial output data changes on transition from active clock state to Idle clock state (see bit 6)
-    SPIXCON1bits.MSTEN = 1;     // Master mode
-    SPIXCON1bits.SPRE = 0b111;  // Secondary prescale 1:1
-    SPIXCON1bits.PPRE = 0b11;   // Primary prescale 1:1
-    SPIXSTATbits.SPIEN = 1;     // Enables module and configures SCKx, SDOx, SDIx and SSx as serial port pins
+    SPI2STATbits.SISEL = 0b101; // Interrupt when the last bit is shifted out of SPIxSR; now the transmit is complete
+    SPI2CON1bits.MODE16 = 1;    // Communication is word-wide (16 bits)
+    SPI2CON1bits.CKE = 1;       // Serial output data changes on transition from active clock state to Idle clock state (see bit 6)
+    SPI2CON1bits.MSTEN = 1;     // Master mode
+    SPI2CON1bits.SPRE = 0b111;  // Secondary prescale 1:1
+    SPI2CON1bits.PPRE = 0b11;   // Primary prescale 1:1
+    SPI2STATbits.SPIEN = 1;     // Enables module and configures SCKx, SDOx, SDIx and SSx as serial port pins
 
     // Ensure default preamp gain
     setPreampGain(GAIN_1);
@@ -203,11 +184,11 @@ static void setPreampGain(const PreampGain preampGain) {
     if(preampGain != currentPreampGain) {
         currentPreampGain = preampGain;
         CS_PIN = 0;         // assert chip select
-        SPIXIF = 0;        // clear flag
-        SPIXBUF = 0x4000 | preampGain;
-        while(!SPIXIF);    // wait for transmit to complete
+        _SPI2IF = 0;        // clear flag
+        SPI2BUF = 0x4000 | preampGain;
+        while(!_SPI2IF);    // wait for transmit to complete
         CS_PIN = 1;         // chip select idle
-        asm volatile(SPIXASM);    // discard received data
+        asm volatile("MOV SPI2BUF, W0");    // discard received data
     }
 }
 

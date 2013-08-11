@@ -1,7 +1,7 @@
 [HEADER]
 magic_cookie={66E99B07-E706-4689-9E80-9B2582898A13}
 file_version=1.0
-device=PIC24FV32KA301
+device=PIC24FV32KA304
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
@@ -34,14 +34,6 @@ file_006=.
 file_007=.
 file_008=.
 file_009=.
-file_010=.
-file_011=.
-file_012=.
-file_013=.
-file_014=.
-file_015=.
-file_016=.
-file_017=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -53,14 +45,6 @@ file_006=no
 file_007=no
 file_008=no
 file_009=no
-file_010=no
-file_011=no
-file_012=no
-file_013=no
-file_014=no
-file_015=no
-file_016=no
-file_017=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -72,41 +56,25 @@ file_006=no
 file_007=no
 file_008=no
 file_009=no
-file_010=no
-file_011=no
-file_012=no
-file_013=no
-file_014=no
-file_015=no
-file_016=no
-file_017=no
 [FILE_INFO]
 file_000=AudioIn\AudioIn.c
-file_001=Delay\Delay.c
-file_002=Leds\Leds.c
-file_003=main.c
-file_004=Uart\Uart1.c
-file_005=Uart\Uart2.c
-file_006=Qutils\Qutils.c
-file_007=Analysis\Analysis.c
-file_008=AudioIn\AudioIn.h
-file_009=Delay\Delay.h
-file_010=Leds\Leds.h
-file_011=Uart\Uart1.h
-file_012=Uart\Uart2.h
-file_013=Uart\UartBauds.h
-file_014=Qutils\Qutils.h
-file_015=Analysis\Analysis.h
-file_016=fixed.h
-file_017=C:\Program Files (x86)\Microchip\xc16\v1.11\lib\libq-coff.a
+file_001=Leds\Leds.c
+file_002=main.c
+file_003=E:\src\DressCode-Firmware\DressCode Firmware\Analysis\Analysis.c
+file_004=AudioIn\AudioIn.h
+file_005=fixed.h
+file_006=Leds\Leds.h
+file_007=E:\src\DressCode-Firmware\DressCode Firmware\Qutils\Qutils.h
+file_008=E:\src\DressCode-Firmware\DressCode Firmware\Analysis\Analysis.h
+file_009=C:\Program Files (x86)\Microchip\MPLAB C30\lib\libq-coff.a
 [SUITE_INFO]
-suite_guid={9BCCB495-CD65-480A-BA76-63D8E78B117F}
+suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=
 [TOOL_SETTINGS]
-TS{8493B2ED-D539-4951-86C9-24D5331F0393}=-g
-TS{F9CE474D-6A6C-401D-A11E-BEE01B244D79}=-g -Wall
-TS{21A8AA9B-E75C-40B6-B3AE-9CBC16FF2EF9}=--heap=350 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
-TS{45B3B6E0-6DAF-4E40-8D20-CFB1B620134D}=
+TS{7D9C6ECE-785D-44CB-BA22-17BF2E119622}=
+TS{25AC22BD-2378-4FDB-BFB6-7345A15512D3}=-g -Wall -msmall-code -Os
+TS{7DAC9A1D-4C45-45D6-B25A-D117C74E8F5A}=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -s -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TS{509E5861-1E2A-483B-8B6B-CA8DB7F2DD78}=
 [INSTRUMENTED_TRACE]
 enable=0
 transport=0

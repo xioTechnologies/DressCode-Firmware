@@ -30,7 +30,7 @@
 
 #include "AudioIn/AudioIn.h"
 #include "Delay/Delay.h"
-#include "fixed.h"
+#include "Fixed.h"
 #include "Analysis/Analysis.h"
 #include "Leds/Leds.h"
 #include <p24Fxxxx.h>
@@ -41,12 +41,11 @@
 //------------------------------------------------------------------------------
 // Configuration bits
 
-_FOSC(OSCIOFNC_OFF)      // CLKO output disabled
-_FOSCSEL(FNOSC_FRCPLL)   // Fast RC Oscillator with Postscaler and PLL Module (FRCDIV+PLL)
-//_FPOR(MCLRE_OFF)       // RA5 input pin enabled, MCLR disabled
-//_FICD(ICS_PGx1)        // EMUC/EMUD share PGC3/PGD3
-_FICD(ICS_PGx3)          // EMUC/EMUD share PGC3/PGD3
-_FWDT(FWDTEN_OFF)
+_FOSC(OSCIOFNC_OFF)     // CLKO output disabled
+_FOSCSEL(FNOSC_FRCPLL)  // Fast RC Oscillator with Postscaler and PLL Module (FRCDIV+PLL)
+_FWDT(FWDTEN_OFF)       // WDT disabled in hardware; SWDTEN bit disabled
+//_FPOR(MCLRE_OFF)        // RA5 input pin enabled, MCLR disabled
+_FICD(ICS_PGx1)         // EMUC/EMUD share PGC3/PGD3
 
 //------------------------------------------------------------------------------
 // Function declarations
@@ -62,34 +61,76 @@ int main(void) {
     InitMain();
 
     // Init modules
-	LedsInit();
-	initAnalysis();
-	AudioInInit();
+	AnalysisInit();
+    AudioInInit();
     //Uart2Init(UART_BAUD_250000, 0);
+    LedsInit();
 
     // Main loop
     while(1) {
-        // Update LEDs
-		if(AudioInIsGetReady()) {
-			updateAnalysis(AudioInGet());
-			//LedsUpdate();
-		}
+        if(AudioInIsGetReady()) {
+			AnalysisUpdate(AudioInGet());
+
+            // Update LEDs
+            //LedsUpdate(audioSample);
+
+            // Print audio sample
+			/*
+            Uart2RxTasks();
+            if(Uart2IsPutReady() >= 6) {
+                static const char asciiDigits[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+                int i = FIXED_TO_INT(audioSample);
+                div_t n;
+                int print = 0;
+                if(i < 0) {
+                    Uart2PutChar('-');
+                    i = -i;
+                }
+                if(i >= 10000) {
+                    n = div(i, 10000);
+                    Uart2PutChar(asciiDigits[n.quot]);
+                    i = n.rem;
+                    print = 1;
+                }
+                if(i >= 1000 || print) {
+                    n = div(i, 1000);
+                    Uart2PutChar(asciiDigits[n.quot]);
+                    i = n.rem;
+                    print = 1;
+                }
+                if(i >= 100 || print) {
+                    n = div(i, 100);
+                    Uart2PutChar(asciiDigits[n.quot]);
+                    i = n.rem;
+                    print = 1;
+                }
+                if(i >= 10 || print) {
+                    n = div(i, 10);
+                    Uart2PutChar(asciiDigits[n.quot]);
+                    i = n.rem;
+                }
+                Uart2PutChar(asciiDigits[i]);
+                Uart2PutChar('\r');
+            }
+			*/
+        }
     }
 }
 
 static void InitMain(void) {
 
-	/*
     // Disable analogue Inputs
     ANSA = 0x0003;  // RA0 is Vref+, RA1 is AN1
     ANSB = 0x0000;
+    ANSC = 0x0000;
 
     // Enable pull-ups
     _CN28PUE = 1;   // RB14 is SDI2
     _CN5PUE = 1;    // RB1 is U2RX
+    _CN32PUE = 1;   // RC0 is STAT (battery charging status)
 
     // Set port latches
-    _LATA9 = 1;    // SS1 idle
+    _LATA9 = 1;     // SS1 idle
 
     // Set port directions
     _TRISC5 = 0;    // RC5 is SCK2
@@ -102,29 +143,6 @@ static void InitMain(void) {
 
     // Setup oscillator for 4 MIPS
     CLKDIVbits.RCDIV = 0b010;   // 2 MHz (divide-by-4)
-	*/
-
-    // Disable analogue Inputs
-    ANSA = 0x0003;  // RA0 is Vref+, RA1 is AN1 -- same on 301
-    ANSB = 0x0000;
-
-    // Enable pull-ups
-    //_CN12PUE = 1;	// RB14 is SDI1		//_CN28PUE = 1;   // RB14 is SDI2
-    // NO SERIAL // _CN5PUE = 1;    // RB1 is U2RX
-
-    // Set port directions
-    TRISBbits.TRISB12 = 0;   // RB12 = SCK1     //_TRISC5 = 0;    // RC5 is SCK2
-    TRISBbits.TRISB13 = 0;   // RB13 = SDO1     //_TRISC4 = 0;    // RC4 is SDO2
-    TRISBbits.TRISB15 = 0;   // RB15 = SS1      //_TRISA9 = 0;    // RA9 is SS2
-
-    // NO SERIAL //_TRISB0 = 0;    // RB0 is U2TX
-
-    TRISBbits.TRISB7 = 0;    // RB7 is OC1
-    TRISBbits.TRISB0 = 0;    // RB0 is OC2		//_TRISC8 = 0;    // RC8 is OC2
-    TRISBbits.TRISB1 = 0;	 // RB1 is OC3		//_TRISA10 = 0;   // RA10 is OC3
-
-    // Setup oscillator for 16 MIPS, 32 MHz
-    CLKDIVbits.RCDIV = 0;   
 }
 
 //------------------------------------------------------------------------------

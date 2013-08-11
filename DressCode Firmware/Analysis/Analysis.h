@@ -11,8 +11,8 @@
 //------------------------------------------------------------------------------
 // Function declarations
 
-void initAnalysis(void);
-void updateAnalysis(Fixed sample);
+void AnalysisInit(void);
+void AnalysisUpdate(Fixed sample);
 
 #endif
 
